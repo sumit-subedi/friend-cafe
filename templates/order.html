@@ -1,0 +1,12 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order</title>
+</head>
+<body>
+        {% for val in order %}
+        {{val.id}}{{val.item}}{{val.qty}}
+        {% endfor %}
+</body>
+</html>
