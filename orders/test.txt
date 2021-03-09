@@ -1,0 +1,60 @@
+# class Product(models.Model):    
+#     name = models.TextField()        
+#     def __str__(self):        
+#         return self.name 
+
+# class Ingredient(models.Model):    
+#     product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name="ingredients",)    
+#     protein = models.FloatField()    
+#     carb = models.FloatField()    
+#     fat = models.FloatField()     
+    
+#     def __str__(self):        
+#         return self.product.name
+
+
+
+
+
+class Order(models.Model):
+    table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True)
+    dateCreated = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return(self.table)
+
+class OrderedItem(models.Model):
+    ordId = models.ForeignKey(Order, on_delete=models.CASCADE)
+    item = models.ForeignKey(Menu, on_delete=models.SET_NULL, null= True)
+    quantity = models.IntegerField(default= 1)
+
+    def __str__(self):
+        return (self.item)
+
+
+
+
+class OrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = ['table']
+
+
+# class OrderedItemSerializer(serializers.ModelSerializer):
+    
+#     items = OrderSerializer()
+#     class Meta:
+#         model = OrderedItem
+#         fields = ('id', 'quantity', 'items')
+
+class IngredientSerializer(serializers.ModelSerializer):    
+    class Meta:        
+        model = Ingredient        
+        fields = "__all__"  
+
+class ProductSerializer(serializers.ModelSerializer):    
+    ingredients = IngredientSerializer(many=True)      
+    class Meta:        
+        model = Product         
+        fields = ("name","ingredients",)
